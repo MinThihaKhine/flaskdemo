@@ -19,7 +19,7 @@ def home():
 @app.route('/about')
 def about():
     """About page route."""
-    return "I am still working on this"
+    return render_template("about.html")
 
 
 @app.route('/search', methods=['POST', 'GET'])
@@ -51,11 +51,11 @@ def get_page(search_term):
         # This is a disambiguation page; get the first real page (close enough)
         page_titles = wikipedia.search(search_term)
         # Sometimes the next page has the same name (different caps), so don't try the same again
-        if page_titles[1].lower() == page_titles[0].lower():
+        if len(page_titles) > 1 and page_titles[1].lower() == page_titles[0].lower():
             title = page_titles[2]
         else:
             title = page_titles[1]
-        page = get_page(wikipedia.page(title))
+        page = get_page(title)
     return page
 
 
